@@ -47,3 +47,13 @@ def excel_to_json_by_sheet(filename, sheet_name):
     return group_by_row
 
 
+filename = "DataDictionary.xlsx"
+
+sheet_names = pd.ExcelFile(filename).sheet_names
+
+excel_dict = {}
+
+for sheet in sheet_names:
+    excel_dict[sheet] = excel_to_json_by_sheet(filename, sheet)
+
+write_to_file(f"{filename}.json", json.dumps(excel_dict))
