@@ -3,7 +3,9 @@ import json
 
 
 def write_to_file(filename, data):
-
+    with open(f"logs/{filename}", "w") as f:
+        f.write(data)
+        f.close()
 
 
 def list_to_dict(list):
