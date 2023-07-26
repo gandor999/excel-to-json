@@ -9,7 +9,11 @@ def write_to_file(filename, data):
 
 
 def list_to_dict(list):
+    temp = {}
+    for i in range(len(list)):
+        temp[list[i][0]] = list[i][1]
 
+    return temp
 
 
 def excel_to_json_by_sheet(filename, sheet_name):
