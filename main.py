@@ -47,7 +47,7 @@ def excel_to_json_by_sheet(filename, sheet_name):
     return group_by_row
 
 
-filename = "DataDictionary.xlsx"
+filename = "DataDictionary+-+Training+Level+1.xlsx"
 
 sheet_names = pd.ExcelFile(filename).sheet_names
 
