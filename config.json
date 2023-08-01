@@ -1,0 +1,6 @@
+{
+    "excelFilename": "DataDictionary+-+Training+Level+1.xlsx",
+    "jsonFileToTransForm": "WS Response.json",
+    "rootElementName": "Response",
+    "transform": true
+}

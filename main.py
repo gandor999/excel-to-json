@@ -1,59 +1,33 @@
+from operator import itemgetter
 import pandas as pd
 import json
+from util.util import (
+    excel_to_json_by_sheet,
+    write_to_file,
+    transform_to_schema,
+    read_file,
+)
+
+config = read_file("config.json")
+
+(
+    excel_filename,
+    json_file_to_transform,
+    root_element_name,
+    transform,
+) = itemgetter(
+    "excelFilename", "jsonFileToTransForm", "rootElementName", "transform"
+)(config)
 
 
-def write_to_file(filename, data):
-    with open(f"logs/{filename}", "w") as f:
-        f.write(data)
-        f.close()
-
-
-def list_to_dict(list):
-    temp = {}
-    for i in range(len(list)):
-        temp[list[i][0]] = list[i][1]
-
-    return temp
-
-
-def excel_to_json_by_sheet(filename, sheet_name):
-    # to get rid of null convert to json first then to dict
-    sheet = json.loads(pd.read_excel(filename, sheet_name=sheet_name).to_json())
-
-    col_names = []
-    row_values = []
-
-    for k, v in sheet.items():
-        col_names.append(k)
-        row_values.append(list(v.values()))
-
-    col_length = len(col_names)
-    row_length = len(row_values[0])
-
-    group_by_row = []
-
-    # iterate over values
-    # arrange them with same index
-
-    for j in range(row_length):
-        temp = []
-        for i in range(col_length):
-            print(col_names[i], row_values[i][j])
-            temp.append((col_names[i], row_values[i][j]))
-        group_by_row.append(list_to_dict(temp))
-
-    write_to_file(f"{sheet_name}.json", json.dumps(group_by_row))
-
-    return group_by_row
-
-
-filename = "DataDictionary+-+Training+Level+1.xlsx"
-
-sheet_names = pd.ExcelFile(filename).sheet_names
+sheet_names = pd.ExcelFile(excel_filename).sheet_names
 
 excel_dict = {}
 
 for sheet in sheet_names:
-    excel_dict[sheet] = excel_to_json_by_sheet(filename, sheet)
+    excel_dict[sheet] = excel_to_json_by_sheet(excel_filename, sheet)
 
-write_to_file(f"{filename}.json", json.dumps(excel_dict))
+if transform:
+    transform_to_schema("WS Response.json", "Response")
+
+write_to_file(f"{excel_filename}.json", json.dumps(excel_dict))
