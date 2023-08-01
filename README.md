@@ -22,4 +22,4 @@ Then run:
 #### Usage
 `venv\Scripts\python.exe main.py` or `venv/Scripts/python.exe main.py`
 
-Just change the filename variable in `main.py` if you would like to change filename.
+To specify what file to convert, change the `excelFile` value in `config.json` to the desired one.
